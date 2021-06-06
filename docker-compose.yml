@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: movie-catalog-backend
+    environment:
+      - FLASK_APP=main.py
+      - FLASK_DEBUG=1
+      - ENVIRONMENT=DEV
+      - SECRET_KEY=pI3e4TKGml0Xg0HeQQUk0v08Imia1dHlzYz01McfQRHSWRuYHAj93uqpC3MoxqHV1StY1Dz8moooRVf6sSFvmjErz8NlX4gC1IA
+      - DB=postgresql
+      - DB_DRIVER=psycopg2
+      - DB_HOST=pgmaster
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=letsplay
+      - DB_NAME=omdb_personal
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redispassword123
+      - REDIS_DEFAULT_EXPIRATION_TIME=21600
+      - DEFAULT_DB_NUM=1
+      - JWT_SECRET_KEY=Lh3cqnr6Dq1z1XXMb4Fyuq8atwl8OvtihcraaRenGkVFn0UQZ6iK5It9qvOelRcVIpd8ogxdZqkIii
+      - OMDB_API_KEY=5a8ae33f
+      - FLASK_CACHING_DB_NUM=0
+      - LIMITER_CACHING_DB_NUM=5
+    ports:
+      - "8080:80"
+    depends_on:
+      - pgmaster
+      - redis
+    networks:
+      - movie-catalog-network
+
+  pgmaster:
+    image: bitnami/postgresql:latest
+    ports:
+      - "6432:5432"
+    environment:
+      - POSTGRESQL_PASSWORD=letsplay
+      - POSTGRESQL_DATABASE=omdb_personal
+    volumes:
+      - ./postgresql/database/postgres/omdb_personal/bitnami/postgresql-persistence:/bitnami
+    networks:
+      - movie-catalog-network
+
+  redis:
+    image: bitnami/redis
+    ports:
+      - "7379:6379"
+    environment:
+      - REDIS_PASSWORD=redispassword123
+    networks:
+      - movie-catalog-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8888:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=tahmid.choyon@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=qwerty123456
+    depends_on:
+      - pgmaster
+    networks:
+      - movie-catalog-network
+
+networks:
+  movie-catalog-network:
+    driver: bridge
