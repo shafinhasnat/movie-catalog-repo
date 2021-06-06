@@ -23,7 +23,7 @@ services:
       - REDIS_DEFAULT_EXPIRATION_TIME=21600
       - DEFAULT_DB_NUM=1
       - JWT_SECRET_KEY=Lh3cqnr6Dq1z1XXMb4Fyuq8atwl8OvtihcraaRenGkVFn0UQZ6iK5It9qvOelRcVIpd8ogxdZqkIii
-      - OMDB_API_KEY=5a8ae33f
+      - OMDB_API_KEY=6fa52fa7
       - FLASK_CACHING_DB_NUM=0
       - LIMITER_CACHING_DB_NUM=5
     ports:
