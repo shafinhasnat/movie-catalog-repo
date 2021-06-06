@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  frontend:
+    build: 
+      context: ./frontend
+    image: movie-catalog-frontend
+    environment: 
+      - API_BASE_URL=http://127.0.0.1:8080
+    ports: 
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - movie-catalog-network
   backend:
     build:
       context: ./backend
@@ -66,6 +78,7 @@ services:
       - pgmaster
     networks:
       - movie-catalog-network
+
 
 networks:
   movie-catalog-network:
